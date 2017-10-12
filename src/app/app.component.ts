@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-export class Hero {
-  id: number;
-  name: string;
-}
+import { Hero } from '$models/hero';
 
 const HEROES: Hero[] = [
   { id: 11, name: 'Mr. Nice' },
@@ -20,7 +17,7 @@ const HEROES: Hero[] = [
 ];
 
 @Component({
-  selector: 'app-root',
+  selector: 'fapp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -28,13 +25,8 @@ export class AppComponent {
   title = 'My First Angular App';
   heroes = HEROES;
   selectedHero: Hero;
-  hero: Hero = {
-    id: 1,
-    name: 'Montecristo',
-  };
 
   onSelect(hero: Hero): void {
-    console.log('onselect', hero);
     this.selectedHero = hero;
   }
 }
