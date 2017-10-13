@@ -1,0 +1,17 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div>
+
+  <h2>My Heroes</h2>
+  <ul class="heroes">
+    <li *ngFor="let hero of heroes"
+      class="box hero"
+      [class.selected]="hero === selectedHero"
+      (click)="onSelect(hero)">
+      <span class="badge">{{ hero.id }}</span>
+      <span class="text">{{ hero.name }}</span>
+    </li>
+  </ul>
+
+  <fapp-hero-detail [hero]="selectedHero"></fapp-hero-detail>
+
+</div>

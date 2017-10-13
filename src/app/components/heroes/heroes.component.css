@@ -1,0 +1,39 @@
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15rem;
+  text-align: left;
+}
+
+.heroes .hero {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+
+.heroes .hero:hover {
+  left: .1em;
+}
+
+.heroes .hero:hover,
+.heroes .hero.selected,
+.heroes .badge {
+  background-color: rgba(0, 204, 255, 0.3);
+}
+
+.heroes .text {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.heroes .badge {
+  display: flex;
+  align-items: center;
+  font-size: small;
+  color: white;
+  padding: 1rem;
+  line-height: 1rem;
+  border-radius: 0rem;
+}
