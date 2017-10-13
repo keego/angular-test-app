@@ -7,6 +7,7 @@ html, body {
 body {
   font-family: sans-serif;
   color: white;
+  font-size: 14px;
 }
 
 h1 {
@@ -16,4 +17,61 @@ h1 {
 
 h2 {
   color: rgba(218, 218, 218, 0.6);
+}
+
+input[type="text"] {
+  box-shadow: inset 0px 0px 0px 1px rgba(238, 238, 238, 0.6);
+  color: white;
+  font-weight: normal;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  box-shadow: inset 0px 0px 0px 1px rgba(0, 204, 255, 0.6);
+}
+
+legend {
+  border: 0;
+  color: white;
+  font-size: small;
+  margin: 0.5rem;
+  text-align: left;
+}
+
+label {
+  font-weight: normal;
+}
+
+/* Custom classes */
+
+.box,
+.box-inline {
+  box-shadow: inset 0px 0px 0px 1px rgba(238, 238, 238, 0.3);
+  color: white;
+}
+
+.box,
+.box-inline,
+input[type="text"] {
+  background-color: rgba(206, 206, 206, 0.1);
+  border-radius: 0.5rem;
+  border: 0;
+  display: flex;
+  margin: 0.5rem;
+  overflow: hidden;
+  padding: 0.5em;
+}
+
+.box-inline {
+  align-self: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }

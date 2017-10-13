@@ -1,13 +1,22 @@
-<div *ngIf="hero">
+<div *ngIf="hero" class="column">
+  <div class="box-inline column">
 
-  <h2>{{ hero.name }} details!</h2>
+    <h2>{{ hero.name }} details!</h2>
 
-  <div>
-    <label>id: </label>{{ hero.id }}
-    <label class="center-block">
-      <span>name:</span>
-      <input [(ngModel)]="hero.name" placeholder="name">
-    </label>
+    <div>
+      <label>id: </label>{{ hero.id }}
+    </div>
+
+    <div>
+      <label>
+        <legend>Name:</legend>
+        <input
+          type="text"
+          spellcheck="false"
+          [(ngModel)]="hero.name"
+          placeholder="name" />
+      </label>
+    </div>
+
   </div>
-
 </div>
