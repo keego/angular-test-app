@@ -10,7 +10,8 @@
     "baseUrl": "src",
     "paths": {
       "$components/*": ["app/components/*"],
-      "$models/*": ["app/models/*"]
+      "$models/*": ["app/models/*"],
+      "$services/*": ["app/services/*"]
     },
     "target": "es5",
     "typeRoots": [
