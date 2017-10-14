@@ -6,3 +6,7 @@
   background-size: cover;
   min-height: 100vh;
 }
+
+nav a {
+  margin: 0.5rem;
+}

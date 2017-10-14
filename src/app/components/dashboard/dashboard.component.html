@@ -1,0 +1,11 @@
+<section class="column box-inline padded top-heroes">
+  <h2>Top Heroes</h2>
+
+  <ul class="row">
+    <li *ngFor="let hero of heroes" class="box">
+      <a [routerLink]="['/detail', hero.id]">
+        {{ hero.name }}
+      </a>
+    </li>
+  </ul>
+</section>

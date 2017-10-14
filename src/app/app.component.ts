@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'Welcome to the angular test app';
+  title = 'Welcome to my first Angular v4 app!';
 
   constructor() { }
 
