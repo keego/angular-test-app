@@ -1,16 +1,37 @@
-<div>
+<div class="column">
 
   <h2>My Heroes</h2>
+
+  <div class="padded column box-inline">
+    <label>
+      <legend>Hero name:</legend>
+      <input
+        type="text"
+        spellcheck="false"
+        placeholder="name"
+        #heroName />
+    </label>
+    <button (click)="add(heroName.value); heroName.value=''">
+      Add
+    </button>
+  </div>
 
   <section class="row">
 
     <ul class="heroes">
       <li *ngFor="let hero of heroes"
-        class="box-inline hero"
+        class="box-inline hero row"
         [class.selected]="hero === selectedHero"
         (click)="onSelect(hero)">
+
         <span class="badge">{{ hero.id }}</span>
         <span class="text">{{ hero.name }}</span>
+        <button
+          class="delete"
+          (click)="delete(hero); $event.stopPropagation()">
+          x
+        </button>
+
       </li>
     </ul>
 

@@ -8,34 +8,59 @@ section.row {
   text-align: left;
 }
 
-.heroes .hero {
+.hero {
   position: relative;
   display: flex;
+  align-items: stretch;
+  justify-content: space-between;
   cursor: pointer;
 }
 
-.heroes .hero:hover {
+.hero:hover {
   left: .1em;
 }
 
-.heroes .hero:hover,
-.heroes .hero.selected,
-.heroes .badge {
+.hero:hover,
+.hero.selected,
+.hero .badge {
   background-color: rgba(0, 204, 255, 0.3);
 }
 
-.heroes .text {
+.hero .badge {
   display: flex;
-  align-items: center;
-  padding-left: 1rem;
-}
-
-.heroes .badge {
-  display: flex;
+  flex: 0 auto;
   align-items: center;
   font-size: small;
   color: white;
   padding: 1em;
   line-height: 1em;
   border-radius: 0;
+}
+
+.hero .text {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.hero .delete {
+  display: flex;
+  flex: 0 auto;
+  justify-self: flex-end;
+  font-size: small;
+  color: white;
+  padding: 1em;
+  border-radius: 0;
+  margin: 0;
+}
+
+.hero .delete:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-self: flex-end;
+  font-size: small;
+  color: white;
+  padding: 1em;
+  margin: 0;
 }
