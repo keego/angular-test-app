@@ -62,12 +62,17 @@ h2, h3 {
 
 input[type="text"] {
   box-shadow: inset 0px 0px 0px 1px rgba(238, 238, 238, 0.6);
-  color: white;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: normal;
   outline: none;
 }
 
+input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 input[type="text"]:focus {
+  text-shadow: 0px 0px 2px rgba(0, 204, 255, 0.6);
   box-shadow: inset 0px 0px 0px 1px rgba(0, 204, 255, 0.6);
 }
 
@@ -91,13 +96,15 @@ ul {
 /* Custom classes */
 
 .box,
-.box-inline {
+.box-inline,
+.box-button {
   box-shadow: inset 0px 0px 0px 1px rgba(238, 238, 238, 0.3);
   color: white;
 }
 
 .box,
 .box-inline,
+.box-button,
 button,
 input[type="text"] {
   background-color: rgba(206, 206, 206, 0.1);
@@ -106,6 +113,11 @@ input[type="text"] {
   display: flex;
   margin: 0.5rem;
   overflow: hidden;
+}
+
+.box-button:hover {
+  background-color: rgba(0, 204, 255, 0.3);
+  cursor: pointer;
 }
 
 .padded,

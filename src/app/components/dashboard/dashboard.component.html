@@ -1,11 +1,17 @@
-<section class="column box-inline padded top-heroes">
-  <h2>Top Heroes</h2>
+<div class="dashboard column">
+  <section class="top-heroes column box-inline padded">
+    <h2>Top Heroes</h2>
 
-  <ul class="row">
-    <li *ngFor="let hero of heroes" class="box">
-      <a [routerLink]="['/detail', hero.id]">
-        {{ hero.name }}
-      </a>
-    </li>
-  </ul>
+    <ul class="row">
+      <li *ngFor="let hero of heroes" class="box">
+        <a [routerLink]="['/detail', hero.id]">
+          {{ hero.name }}
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="hero-search column box-inline padded">
+    <fapp-hero-search></fapp-hero-search>
 </section>
+</div>

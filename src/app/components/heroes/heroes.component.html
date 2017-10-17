@@ -35,11 +35,18 @@
       </li>
     </ul>
 
-    <div *ngIf="selectedHero" class="box padded column">
-      <h2>
-        <strong>{{selectedHero.name}}</strong> is my hero
-      </h2>
-      <button (click)="gotoDetail()">View Details</button>
+    <div
+      *ngIf="selectedHero"
+      class="hero-detail"
+      (click)="selectedHero = null">
+      <div
+        class="box padded column"
+        (click)="$event.stopPropagation()">
+        <h2>
+          <strong>{{selectedHero.name}}</strong> is my hero
+        </h2>
+        <button (click)="gotoDetail()">View Details</button>
+      </div>
     </div>
 
   </section>
