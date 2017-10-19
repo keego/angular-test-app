@@ -1,30 +1,75 @@
-<div *ngIf="hero" class="column">
+<div class="column">
   <div class="box-inline padded column">
 
-    <h2>{{ hero.name }} details!</h2>
-
-    <div>
-      <label>
-        <legend>id:</legend>
-        <div>{{ hero.id }}</div>
-      </label>
+    <div *ngIf="error">
+      <h3>Uh oh!</h3>
+      <p>{{ error }}</p>
     </div>
 
-    <div>
-      <label>
-        <legend>name:</legend>
-        <input
-          type="text"
-          spellcheck="false"
-          [(ngModel)]="hero.name"
-          placeholder="name" />
-      </label>
-    </div>
+    <form *ngIf="heroForm" [formGroup]="heroForm" novalidate>
 
-    <div class="row">
-      <button (click)="save()" class="confirm">Save</button>
-      <button (click)="goBack()" class="cancel">Back</button>
-    </div>
+      <h2>{{ heroForm.value.name }} details!</h2>
+
+      <div>
+        <label>
+          <legend>id:</legend>
+          <div>{{ heroForm.value.id }}</div>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <legend>name:</legend>
+          <input
+            type="text"
+            spellcheck="false"
+            formControlName="name"
+            placeholder="name" />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <legend>info:</legend>
+          <input
+            type="text"
+            spellcheck="false"
+            formControlName="info"
+            placeholder="info" />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <legend>sidekick:</legend>
+          <input
+            type="checkbox"
+            name="sidekick"
+            formControlName="sidekick" />
+        </label>
+      </div>
+
+      <div class="row">
+        <button
+          (click)="save()"
+          [disabled]="heroForm.pristine"
+          class="confirm">
+          Save
+        </button>
+        <button
+          (click)="revert()"
+          [disabled]="heroForm.pristine"
+          class="cancel">
+          Revert
+        </button>
+        <button
+          (click)="goBack()"
+          class="cancel">
+          Go Back
+        </button>
+      </div>
+
+    </form>
 
   </div>
 </div>

@@ -1,4 +1,6 @@
 export class Hero {
-  id: number;
-  name: string;
+  id = 0;
+  name = '';
+  info? = '';
+  sidekick? = false;
 }
