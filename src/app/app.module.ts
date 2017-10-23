@@ -10,6 +10,9 @@ import { InMemoryDataService } from '$services/in-memory-data.service';
 // Routes
 import { AppRoutingModule } from './app-routing.module';
 
+// Redux Store
+import { AppStoreModule } from './app-store.module';
+
 // Components
 import { AppComponent } from './app.component';
 import { DashboardComponent } from '$components/dashboard/dashboard.component';
@@ -35,6 +38,7 @@ import { HeroService } from '$services/hero.service';
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
+    AppStoreModule,
   ],
   providers: [
     HeroService,

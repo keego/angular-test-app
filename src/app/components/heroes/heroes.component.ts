@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+// Redux
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { AppState, Heroes } from '$store/index';
+
 import { Hero } from '$models/hero';
 import { HeroService } from '$services/hero.service';
 
@@ -12,11 +17,15 @@ import { HeroService } from '$services/hero.service';
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
   selectedHero: Hero;
+  heroesStore$: Observable<Hero[]>;
 
   constructor(
     private heroService: HeroService,
     private router: Router,
-  ) { }
+    private store: Store<AppState>,
+  ) {
+    this.heroesStore$ = this.store.select(Heroes.Selectors.getHeroes);
+  }
 
   /* Lifecycle methods */
   ngOnInit(): void {
@@ -28,11 +37,13 @@ export class HeroesComponent implements OnInit {
     name = name.trim();
     if (!name) { return; }
 
-    this.heroService.create(name)
-      .then(hero => {
-        this.heroes.push(hero);
-        this.selectedHero = null;
-      });
+    this.store.dispatch(new Heroes.CreateHeroAction({ name }));
+
+    // this.heroService.create(name)
+    //   .then(hero => {
+    //     this.heroes.push(hero);
+    //     this.selectedHero = null;
+    //   });
   }
 
   delete(hero: Hero): void {
