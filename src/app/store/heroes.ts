@@ -6,7 +6,10 @@ import { Hero } from '$models/hero';
 // ------------------------------------------------------------
 // Action Constants
 // ------------------------------------------------------------
+
 export const CREATE_HERO = '[Heroes] Create Hero';
+export const CREATE_HERO_SUCCESS = '[Heroes] Create Hero Success';
+export const CREATE_HERO_FAIL = '[Heroes] Create Hero Failure';
 
 // ------------------------------------------------------------
 // Actions
@@ -19,8 +22,22 @@ export class CreateHeroAction implements Action {
   }) { }
 }
 
+export class CreateHeroSuccessAction implements Action {
+  readonly type = CREATE_HERO_SUCCESS;
+
+  constructor(public payload: Hero) { }
+}
+
+export class CreateHeroFailAction implements Action {
+  readonly type = CREATE_HERO_FAIL;
+
+  constructor(public payload: any) { }
+}
+
 export type Actions
-  = CreateHeroAction;
+  = CreateHeroAction
+  | CreateHeroSuccessAction
+  | CreateHeroFailAction;
 
 // ------------------------------------------------------------
 // State
@@ -61,6 +78,18 @@ export function reducer(state = initialState, action: Actions): State {
         heroes: [
           ...state.heroes,
           <Hero>{ name },
+        ],
+      };
+    }
+
+    case CREATE_HERO_SUCCESS: {
+      console.log('reducing CREATE_HERO_SUCCESS');
+      const hero = action.payload;
+      return {
+        ...state,
+        heroes: [
+          ...state.heroes,
+          hero,
         ],
       };
     }

@@ -3,6 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+// NgRx Effects
+import { EffectsModule } from '@ngrx/effects';
+import { HeroEffects } from '$effects/hero-effects.service';
+
 // Imports for loading & configuring the in-memory web api
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from '$services/in-memory-data.service';
@@ -39,6 +43,9 @@ import { HeroService } from '$services/hero.service';
     InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
     AppStoreModule,
+    EffectsModule.forRoot([
+      HeroEffects,
+    ]),
   ],
   providers: [
     HeroService,

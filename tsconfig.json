@@ -14,7 +14,8 @@
       "$components/*": ["app/components/*"],
       "$models/*": ["app/models/*"],
       "$services/*": ["app/services/*"],
-      "$store/*": ["app/store/*"]
+      "$store/*": ["app/store/*"],
+      "$effects/*": ["app/effects/*"]
     },
     "target": "es5",
     "typeRoots": [
