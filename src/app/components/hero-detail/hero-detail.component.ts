@@ -39,7 +39,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
         error => {
           this.showError(`Unable to find hero #${id}`);
           console.error(`Error getting hero with id ${id}`, error);
-          return Observable.of(<Hero>{});
+          return Observable.of(null);
         },
       );
   }
@@ -104,7 +104,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
 
     const formModel = this.heroForm.value;
     return {
-      id: this.hero.id,
+      ...this.hero,
       name: formModel.name as string,
       info: formModel.info,
       sidekick: formModel.sidekick,

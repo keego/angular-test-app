@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
@@ -16,13 +17,13 @@ export class HeroService {
 
   create(name: string): Promise<Hero> {
     return this.http
-      .post(this.heroesUrl, JSON.stringify({ name: name }), { headers: this.headers })
+      .post(this.heroesUrl, JSON.stringify({ id: uuidv4(), name: name }), { headers: this.headers })
       .toPromise()
       .then(res => res.json() as Hero)
       .catch(this.handleError);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: string): Promise<void> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.delete(url, {headers: this.headers})
       .toPromise()

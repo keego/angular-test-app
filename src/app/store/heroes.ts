@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { createSelector, Selector } from 'reselect';
+import uuidv4 from 'uuid/v4';
 import { AppState } from '$store/index';
 import { Hero } from '$models/hero';
 
@@ -7,37 +8,46 @@ import { Hero } from '$models/hero';
 // Action Constants
 // ------------------------------------------------------------
 
-export const CREATE_HERO = '[Heroes] Create Hero';
-export const CREATE_HERO_SUCCESS = '[Heroes] Create Hero Success';
-export const CREATE_HERO_FAIL = '[Heroes] Create Hero Failure';
+export const CREATE_HERO_REQUEST = '[Heroes] Create Hero (Request)';
+export const CREATE_HERO_SUCCESS = '[Heroes] Create Hero (Success)';
+export const CREATE_HERO_FAILURE = '[Heroes] Create Hero (Failure)';
 
 // ------------------------------------------------------------
 // Actions
 // ------------------------------------------------------------
-export class CreateHeroAction implements Action {
-  readonly type = CREATE_HERO;
+export class CreateHeroRequest implements Action {
+  readonly type = CREATE_HERO_REQUEST;
+  readonly requestId = uuidv4();
 
-  constructor(public payload: {
-    name: string,
-  }) { }
+  constructor(
+    public payload: {
+      name: string,
+    },
+  ) { }
 }
 
-export class CreateHeroSuccessAction implements Action {
+export class CreateHeroSuccess implements Action {
   readonly type = CREATE_HERO_SUCCESS;
 
-  constructor(public payload: Hero) { }
+  constructor(
+    public requestAction: CreateHeroRequest,
+    public payload: Hero,
+  ) { }
 }
 
-export class CreateHeroFailAction implements Action {
-  readonly type = CREATE_HERO_FAIL;
+export class CreateHeroFailure implements Action {
+  readonly type = CREATE_HERO_FAILURE;
 
-  constructor(public payload: any) { }
+  constructor(
+    public requestAction: CreateHeroRequest,
+    public error: any,
+  ) { }
 }
 
 export type Actions
-  = CreateHeroAction
-  | CreateHeroSuccessAction
-  | CreateHeroFailAction;
+  = CreateHeroRequest
+  | CreateHeroSuccess
+  | CreateHeroFailure;
 
 // ------------------------------------------------------------
 // State
@@ -68,22 +78,10 @@ export class Selectors {
 // ------------------------------------------------------------
 
 export function reducer(state = initialState, action: Actions): State {
+  console.log('reducing', action.type);
   switch (action.type) {
 
-    case CREATE_HERO: {
-      console.log('reducing CREATE_HERO');
-      const { name } = action.payload;
-      return {
-        ...state,
-        heroes: [
-          ...state.heroes,
-          <Hero>{ name },
-        ],
-      };
-    }
-
     case CREATE_HERO_SUCCESS: {
-      console.log('reducing CREATE_HERO_SUCCESS');
       const hero = action.payload;
       return {
         ...state,
@@ -95,7 +93,6 @@ export function reducer(state = initialState, action: Actions): State {
     }
 
     default:
-      console.log('reducing default');
       return state;
   }
 }

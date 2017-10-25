@@ -37,7 +37,7 @@ export class HeroesComponent implements OnInit {
     name = name.trim();
     if (!name) { return; }
 
-    this.store.dispatch(new Heroes.CreateHeroAction({ name }));
+    this.store.dispatch(new Heroes.CreateHeroRequest({ name }));
 
     // this.heroService.create(name)
     //   .then(hero => {

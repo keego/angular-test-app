@@ -18,12 +18,16 @@ export class HeroEffects {
     'Content-Type': 'application/json',
   });
 
+  // non-dispatching effects
+  // @Effect({ dispatch: false }) logActions$ =
+
   @Effect() createHero$: Observable<Action>
-    = this.actions$.ofType(Heroes.CREATE_HERO)
-      .switchMap((action: Heroes.CreateHeroAction) =>
+    = this.actions$
+      .ofType(Heroes.CREATE_HERO_REQUEST)
+      .switchMap((action: Heroes.CreateHeroRequest) =>
         this.heroService.create(action.payload.name)
-          .then(hero => new Heroes.CreateHeroSuccessAction(hero))
-          .catch(reason => new Heroes.CreateHeroFailAction(reason)),
+          .then(hero => new Heroes.CreateHeroSuccess(action, hero))
+          .catch(error => new Heroes.CreateHeroFailure(action, error)),
       );
 
   create(name: string): Promise<Hero> {
