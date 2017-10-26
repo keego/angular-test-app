@@ -19,10 +19,9 @@ import { AppStoreModule } from './app-store.module';
 
 // Components
 import { AppComponent } from './app.component';
-import { DashboardComponent } from '$components/dashboard/dashboard.component';
-import { HeroDetailComponent } from '$components/hero-detail/hero-detail.component';
-import { HeroesComponent } from '$components/heroes/heroes.component';
-import { HeroSearchComponent } from '$components/hero-search/hero-search.component';
+import * as COMPONENTS from '$components/index';
+import * as CONTAINERS from '$containers/index';
+import * as PIPES from '$pipes/index';
 
 // Services
 import { HeroService } from '$services/hero.service';
@@ -30,10 +29,9 @@ import { HeroService } from '$services/hero.service';
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
-    HeroDetailComponent,
-    HeroesComponent,
-    HeroSearchComponent,
+    Object.values(COMPONENTS),
+    Object.values(CONTAINERS),
+    Object.values(PIPES),
   ],
   imports: [
     BrowserModule,

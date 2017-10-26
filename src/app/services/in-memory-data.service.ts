@@ -1,19 +1,20 @@
+import uuidv4 from 'uuid/v4';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const heroes = [
-      { id: '0',  name: 'Zero', info: 'No info here', sidekick: true },
-      { id: '11', name: 'Mr. Nice' },
-      { id: '12', name: 'Narco' },
-      { id: '13', name: 'Bombasto' },
-      { id: '14', name: 'Celeritas' },
-      { id: '15', name: 'Magneta' },
-      { id: '16', name: 'RubberMan' },
-      { id: '17', name: 'Dynama' },
-      { id: '18', name: 'Dr IQ' },
-      { id: '19', name: 'Magma' },
-      { id: '20', name: 'Tornado' },
+      { id: uuidv4(),  name: 'Zero', info: 'No info here', sidekick: true },
+      { id: uuidv4(), name: 'Mr. Nice' },
+      { id: uuidv4(), name: 'Narco' },
+      { id: uuidv4(), name: 'Bombasto' },
+      { id: uuidv4(), name: 'Celeritas' },
+      { id: uuidv4(), name: 'Magneta' },
+      { id: uuidv4(), name: 'RubberMan' },
+      { id: uuidv4(), name: 'Dynama' },
+      { id: uuidv4(), name: 'Dr IQ' },
+      { id: uuidv4(), name: 'Magma' },
+      { id: uuidv4(), name: 'Tornado' },
     ];
 
     return { heroes };
