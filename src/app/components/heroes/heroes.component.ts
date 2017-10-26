@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { AppState, Heroes } from '$store/index';
 
 import { Hero } from '$models/hero';
-import { HeroService } from '$services/hero.service';
 
 @Component({
   selector: 'fapp-heroes',
@@ -15,17 +14,13 @@ import { HeroService } from '$services/hero.service';
   styleUrls: ['./heroes.component.css'],
 })
 export class HeroesComponent implements OnInit {
-  heroes: Hero[];
+  heroes$: Observable<Hero[]>;
   selectedHero: Hero;
-  heroesStore$: Observable<Hero[]>;
 
   constructor(
-    private heroService: HeroService,
     private router: Router,
     private store: Store<AppState>,
-  ) {
-    this.heroesStore$ = this.store.select(Heroes.Selectors.getHeroes);
-  }
+  ) { }
 
   /* Lifecycle methods */
   ngOnInit(): void {
@@ -38,27 +33,18 @@ export class HeroesComponent implements OnInit {
     if (!name) { return; }
 
     this.store.dispatch(new Heroes.CreateHeroRequest({ name }));
-
-    // this.heroService.create(name)
-    //   .then(hero => {
-    //     this.heroes.push(hero);
-    //     this.selectedHero = null;
-    //   });
   }
 
   delete(hero: Hero): void {
-    this.heroService
-        .delete(hero.id)
-        .then(() => {
-          this.heroes = this.heroes.filter(h => h !== hero);
-          if (this.selectedHero === hero) { this.selectedHero = null; }
-        });
+    this.store.dispatch(new Heroes.DeleteHeroRequest({ id: hero.id }));
   }
 
   getHeroes(): void {
-    this.heroService.getHeroes().then((heroes) => {
-      this.heroes = heroes;
-    });
+    // Connect component's heroes to store's heroes
+    this.heroes$ = this.store.select(Heroes.Selectors.getHeroes);
+
+    // Dispatch request to populate the store's heroes
+    this.store.dispatch(new Heroes.GetHeroesRequest());
   }
 
   gotoDetail(): void {

@@ -16,18 +16,22 @@ export class HeroService {
   constructor(private http: Http) { }
 
   create(name: string): Promise<Hero> {
+    const newHero: Hero = {
+      id: uuidv4(), // generate id here to support string ids (InMemDataService only supports numbers)
+      name,
+    };
     return this.http
-      .post(this.heroesUrl, JSON.stringify({ id: uuidv4(), name: name }), { headers: this.headers })
+      .post(this.heroesUrl, JSON.stringify(newHero), { headers: this.headers })
       .toPromise()
       .then(res => res.json() as Hero)
       .catch(this.handleError);
   }
 
-  delete(id: string): Promise<void> {
+  delete(id: string): Promise<string> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.delete(url, {headers: this.headers})
       .toPromise()
-      .then(() => null)
+      .then(() => id)
       .catch(this.handleError);
   }
 
@@ -38,7 +42,7 @@ export class HeroService {
       .catch(this.handleError);
   }
 
-  getHero(id: number): Promise<Hero> {
+  getHero(id: string): Promise<Hero> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get(url)
       .toPromise()

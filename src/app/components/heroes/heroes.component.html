@@ -2,35 +2,33 @@
 
   <h2>My Heroes</h2>
 
-  <div class="padded column box-inline">
-    <p>
-      {{ heroesStore$ | async | json }}
-    </p>
-  </div>
-
-  <div class="padded column box-inline">
+  <!-- Add a new hero -->
+  <form class="padded column box-inline">
     <label>
       <legend>Hero name:</legend>
       <input
-        type="text"
-        spellcheck="false"
-        placeholder="name"
-        #heroName />
+      type="text"
+      spellcheck="false"
+      placeholder="name"
+      #heroName />
     </label>
-    <button (click)="add(heroName.value); heroName.value=''">
+    <button
+      type="submit"
+      (click)="add(heroName.value); heroName.value=''">
       Add
     </button>
-  </div>
+  </form>
 
+  <!-- List of heroes -->
   <section class="row">
 
     <ul class="heroes">
-      <li *ngFor="let hero of heroes"
+      <li *ngFor="let hero of heroes$ | async"
         class="box-inline hero row"
         [class.selected]="hero === selectedHero"
         (click)="onSelect(hero)">
 
-        <span class="badge">{{ hero.id }}</span>
+        <span class="badge">{{ hero.id | truncate:5 }}</span>
         <span class="text">{{ hero.name }}</span>
         <button
           class="delete"
@@ -41,6 +39,7 @@
       </li>
     </ul>
 
+    <!-- Selected hero -->
     <div
       *ngIf="selectedHero"
       class="hero-detail"

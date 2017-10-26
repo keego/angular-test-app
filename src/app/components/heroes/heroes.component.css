@@ -40,6 +40,8 @@ section.row {
   padding: 1em;
   line-height: 1em;
   border-radius: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .hero .text {
@@ -79,7 +81,7 @@ section.row {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .hero-detail > * {
