@@ -1,9 +1,8 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, Output, OnInit, OnChanges, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Location } from '@angular/common';
 
 // Redux
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/filter';
 
 import { Hero } from '$models/hero';
@@ -12,14 +11,26 @@ import { Hero } from '$models/hero';
   selector: 'fapp-hero-detail',
   templateUrl: './hero-detail.component.html',
   styleUrls: ['./hero-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroDetailComponent implements OnInit, OnChanges {
-  @Input() hero$: BehaviorSubject<Hero>;
+  private _hero: Hero;
+
+  @Input()
+  set hero(hero: Hero) {
+    this.setHero(hero);
+  }
+  get hero(): Hero {
+    return this._hero;
+  }
+
+  @Input() error = '';
+
+  @Output() goBack = new EventEmitter<void>();
+  @Output() save = new EventEmitter<Hero>();
   heroForm: FormGroup;
-  error: string;
 
   constructor(
-    private location: Location,
     private formBuilder: FormBuilder,
   ) { }
 
@@ -27,8 +38,10 @@ export class HeroDetailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     // this.getHero();
-    console.log('hero', { hero: this.hero$.getValue() });
-    this.hero$.subscribe(hero => this.setHero(hero));
+
+    // console.log('hero', { hero: this.hero$.getValue() });
+    // this.hero$.subscribe(hero => this.setHero(hero));
+    console.log('hero', { hero: this.hero });
   }
 
   ngOnChanges(): void {
@@ -38,17 +51,15 @@ export class HeroDetailComponent implements OnInit, OnChanges {
 
   /* User Actions */
 
-  save(): void {
+  // save(): void {
     // this.hero = this.getHeroFromFormData();
     // this.store.dispatch(new Heroes.UpdateHeroRequest({ hero: this.hero }));
-  }
+  // }
 
   revert(): void {
+    // Trigger setHero with the original hero to reset state
+    this.setHero(this._hero);
     // this.setFormDataFromHero();
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 
   /* Component methods */
@@ -76,7 +87,11 @@ export class HeroDetailComponent implements OnInit, OnChanges {
   // }
 
   private setHero(hero: Hero) {
-    // this.hero = hero;
+    if (!hero) {
+      return;
+    }
+
+    this._hero = hero;
     console.log('setHero', { hero });
     this.setFormDataFromHero(hero);
     this.error = '';
@@ -95,6 +110,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
   /* Data Transformations */
 
   private getFormDataFromHero(hero: Hero = <Hero>{}): any {
+    console.log('[getFormDataFromHero]', hero);
     return {
       id: hero.id,
       name: hero.name,
@@ -103,17 +119,18 @@ export class HeroDetailComponent implements OnInit, OnChanges {
     };
   }
 
-  // private getHeroFromFormData(): Hero {
-  //   if (!this.heroForm) {
-  //     return null;
-  //   }
+  getHeroFromFormData(): Hero {
+    if (!this.heroForm) {
+      return null;
+    }
 
-  //   const formModel = this.heroForm.value;
-  //   return {
-  //     ...this.hero,
-  //     name: formModel.name as string,
-  //     info: formModel.info,
-  //     sidekick: formModel.sidekick,
-  //   };
-  // }
+    const formModel = this.heroForm.value;
+    console.log('getHeroFromFormData()', { hero: this._hero });
+    return {
+      ...this._hero,
+      name: formModel.name as string,
+      info: formModel.info,
+      sidekick: formModel.sidekick,
+    };
+  }
 }

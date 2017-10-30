@@ -51,7 +51,7 @@
 
       <div class="row">
         <button
-          (click)="save()"
+          (click)="save.emit(getHeroFromFormData())"
           [disabled]="heroForm.pristine"
           class="confirm">
           Save
@@ -63,7 +63,7 @@
           Revert
         </button>
         <button
-          (click)="goBack()"
+          (click)="goBack.emit()"
           class="cancel">
           Go Back
         </button>
