@@ -25,13 +25,6 @@ import { Hero } from '$models/hero';
       (save)="updateHero($event)"
     >
     </fapp-hero-detail>
-    <fapp-hero-detail
-      [hero]="selectedHero$ | async"
-      [error]="error$ | async"
-      (goBack)="goBack()"
-      (save)="updateHero($event)"
-    >
-    </fapp-hero-detail>
   `,
   styles: [`
   `],
@@ -51,10 +44,6 @@ export class HeroDetailPageComponent implements OnInit, OnDestroy {
   /* LifeCycle methods */
 
   ngOnInit(): void {
-    this.getHeroes();
-    this.getSelectedHero();
-    this.getSelectedHeroId();
-
     this.heroes$.subscribe(heroes => {
       console.log('[heroes$] =>', { heroes });
     });
@@ -64,6 +53,10 @@ export class HeroDetailPageComponent implements OnInit, OnDestroy {
     this.selectedHeroId$.subscribe(id => {
       console.log('[selectedHeroId$] =>', { id });
     });
+
+    this.getHeroes();
+    this.getSelectedHero();
+    this.getSelectedHeroId();
   }
 
   ngOnDestroy(): void {
@@ -98,23 +91,28 @@ export class HeroDetailPageComponent implements OnInit, OnDestroy {
     Observable
       .combineLatest(this.heroes$, this.selectedHeroId$)
       .do(([heroes, id]) => console.warn('combineLatest', { heroes, id }))
-      .map(([heroes, id]) => [heroes.find(h => h.id === id), id])
-      .do(([heroes, id]) => console.warn('map', { heroes, id }))
-      .switchMap(([hero, id]) => {
-        console.log('[switchMap]', { hero, id });
+
+      .map(([heroes, id]) => heroes.find(h => h.id === id))
+      .do((hero) => console.warn('map', { hero }))
+
+      // .filter(hero => hero !== undefined)
+      // .do((hero) => console.warn('filter', { hero }))
+
+      .switchMap((hero) => {
+        console.log('[switchMap]', { hero });
+
         if (hero === undefined) {
-          return Observable.throw(`Unable to find hero #${id}`);
+          this.showError(`Unable to find hero #${''}`);
+          console.error(`Unable to find hero #${''}`);
         }
 
         return Observable.of(hero);
       })
-      .do(([heroes, id]) => console.warn('switchMap', { heroes, id }))
+      .do((hero) => console.warn('switchMap', { hero }))
+
       .subscribe(
         hero => this.selectedHero$.next(hero),
-        error => {
-          this.showError(error);
-          console.error(error);
-        },
+        _ => {},
       );
   }
 
