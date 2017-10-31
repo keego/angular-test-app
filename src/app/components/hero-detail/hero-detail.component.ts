@@ -1,9 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-// Redux
-import 'rxjs/add/operator/filter';
-
 import { Hero } from '$models/hero';
 
 type HeroFormData = Hero;

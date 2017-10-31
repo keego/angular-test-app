@@ -51,6 +51,16 @@ export class HeroEffects {
           .catch(error => new Heroes.DeleteHeroFailure(action, error)),
       );
 
+  // TODO
+  @Effect() selectHero$: Observable<Action>
+    = this.actions$
+      .ofType(Heroes.SELECT_HERO_REQUEST)
+      .switchMap((action: Heroes.SelectHeroRequest) =>
+        this.heroService.delete(action.payload.id)
+          .then(id => new Heroes.SelectHeroSuccess(action, { id }))
+          .catch(error => new Heroes.SelectHeroFailure(action, error)),
+      );
+
   constructor(
     private actions$: Actions,
     private heroService: HeroService,

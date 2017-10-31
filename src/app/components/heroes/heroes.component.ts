@@ -1,10 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-// Redux
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { AppState, Heroes } from '$store/index';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Hero } from '$models/hero';
 
@@ -12,46 +6,38 @@ import { Hero } from '$models/hero';
   selector: 'fapp-heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css'],
+  // Use OnPush to tell Angular our component is a pure function
+  // (i.e. only changes when its Inputs change) and allow it to
+  // optimize change detection.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeroesComponent implements OnInit {
-  heroes$: Observable<Hero[]>;
-  selectedHero: Hero;
+export class HeroesComponent {
+  @Input() heroes: Hero[];
+  @Input() selectedHero: Hero;
+
+  @Output() onAdd = new EventEmitter<string>();
+  @Output() onDelete = new EventEmitter<string>();
+  @Output() onGoToDetail = new EventEmitter<string>();
+  @Output() onSelect = new EventEmitter<string>();
 
   constructor(
-    private router: Router,
-    private store: Store<AppState>,
   ) { }
 
-  /* Lifecycle methods */
-  ngOnInit(): void {
-    this.getHeroes();
-  }
-
   /* Component methods */
+
   add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-
-    this.store.dispatch(new Heroes.CreateHeroRequest({ name }));
+    this.onAdd.emit(name);
   }
 
-  delete(hero: Hero): void {
-    this.store.dispatch(new Heroes.DeleteHeroRequest({ id: hero.id }));
+  delete(id: string): void {
+    this.onDelete.emit(id);
   }
 
-  getHeroes(): void {
-    // Connect component's heroes to store's heroes
-    this.heroes$ = this.store.select(Heroes.Selectors.getHeroes);
-
-    // Dispatch request to populate the store's heroes
-    this.store.dispatch(new Heroes.GetHeroesRequest());
+  goToDetail(id: string): void {
+    this.onGoToDetail.emit(id);
   }
 
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedHero.id]);
-  }
-
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
+  select(id: string): void {
+    this.onSelect.emit(id);
   }
 }

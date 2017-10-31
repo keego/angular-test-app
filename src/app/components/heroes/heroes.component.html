@@ -23,16 +23,16 @@
   <section class="row">
 
     <ul class="heroes">
-      <li *ngFor="let hero of heroes$ | async"
+      <li *ngFor="let hero of heroes"
         class="box-inline hero row"
         [class.selected]="hero === selectedHero"
-        (click)="onSelect(hero)">
+        (click)="select(hero.id)">
 
         <span class="badge">{{ hero.id | truncate:5 }}</span>
         <span class="text">{{ hero.name }}</span>
         <button
           class="delete"
-          (click)="delete(hero); $event.stopPropagation()">
+          (click)="delete(hero.id); $event.stopPropagation()">
           x
         </button>
 
@@ -50,7 +50,7 @@
         <h2>
           <strong>{{selectedHero.name}}</strong> is my hero
         </h2>
-        <button (click)="gotoDetail()">View Details</button>
+        <button (click)="goToDetail(selectedHero.id)">View Details</button>
       </div>
     </div>
 

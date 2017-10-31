@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { createSelector, Selector } from 'reselect';
+import { createSelector } from 'reselect';
 import uuidv4 from 'uuid/v4';
 import { AppState } from '$store/index';
 import { Hero } from '$models/hero';
@@ -27,6 +27,10 @@ export const UPDATE_HERO_FAILURE = '[Heroes] Update Hero (Failure)';
 export const DELETE_HERO_REQUEST = '[Heroes] Delete Hero (Request)';
 export const DELETE_HERO_SUCCESS = '[Heroes] Delete Hero (Success)';
 export const DELETE_HERO_FAILURE = '[Heroes] Delete Hero (Failure)';
+
+export const SELECT_HERO_REQUEST = '[Heroes] Select Hero (Request)';
+export const SELECT_HERO_SUCCESS = '[Heroes] Select Hero (Success)';
+export const SELECT_HERO_FAILURE = '[Heroes] Select Hero (Failure)';
 
 // ------------------------------------------------------------
 // Actions
@@ -150,6 +154,36 @@ export class DeleteHeroFailure implements Action {
   ) { }
 }
 
+/**
+ * Select a single hero
+ */
+export class SelectHeroRequest implements Action {
+  readonly type = SELECT_HERO_REQUEST;
+  readonly requestId = uuidv4();
+
+  constructor(
+    public payload: { id: string },
+  ) { }
+}
+
+export class SelectHeroSuccess implements Action {
+  readonly type = SELECT_HERO_SUCCESS;
+
+  constructor(
+    public requestAction: SelectHeroRequest,
+    public payload: { id: string },
+  ) { }
+}
+
+export class SelectHeroFailure implements Action {
+  readonly type = SELECT_HERO_FAILURE;
+
+  constructor(
+    public requestAction: SelectHeroRequest,
+    public error: any,
+  ) { }
+}
+
 export type Actions
   = GetHeroesRequest
   | GetHeroesSuccess
@@ -162,7 +196,11 @@ export type Actions
   | UpdateHeroFailure
   | DeleteHeroRequest
   | DeleteHeroSuccess
-  | DeleteHeroFailure;
+  | DeleteHeroFailure
+  | SelectHeroRequest
+  | SelectHeroSuccess
+  | SelectHeroFailure
+;
 
 // ------------------------------------------------------------
 // State
@@ -170,10 +208,12 @@ export type Actions
 
 export interface State {
   heroes: Hero[];
+  selectedHeroId: string;
 }
 
 export const initialState: State = {
-  heroes: <Hero[]>[],
+  heroes: [],
+  selectedHeroId: undefined,
 };
 
 // ------------------------------------------------------------
@@ -181,11 +221,21 @@ export const initialState: State = {
 // ------------------------------------------------------------
 
 const getLocalState = (state: AppState) => state.heroes;
-const createLocalSelector: <V>(selector: Selector<State, V>) => Selector<AppState, V>
-  = (selector) => createSelector(getLocalState, selector);
 
 export class Selectors {
-  static getHeroes = createLocalSelector(state => state.heroes);
+  static getHeroes = createSelector(
+    getLocalState,
+    (state: State) => state.heroes,
+  );
+  static getSelectedHeroId = createSelector(
+    getLocalState,
+    (state: State) => state.selectedHeroId,
+  );
+  static getSelectedHero = createSelector(
+    Selectors.getHeroes,
+    Selectors.getSelectedHeroId,
+    (heroes: Hero[], id: string) => heroes.find(hero => hero.id === id),
+  );
 }
 
 // ------------------------------------------------------------
@@ -193,7 +243,7 @@ export class Selectors {
 // ------------------------------------------------------------
 
 export function reducer(state = initialState, action: Actions): State {
-  console.log('reducing', action.type);
+  console.log('(reducing', action.type, ')');
   switch (action.type) {
 
     case GET_HEROES_SUCCESS: {
@@ -233,6 +283,15 @@ export function reducer(state = initialState, action: Actions): State {
       return {
         ...state,
         heroes,
+      };
+    }
+
+    case SELECT_HERO_SUCCESS: {
+      const { id } = action.payload;
+
+      return {
+        ...state,
+        selectedHeroId: id,
       };
     }
 

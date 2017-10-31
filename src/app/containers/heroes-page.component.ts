@@ -1,7 +1,6 @@
 // import { Component /*, ChangeDetectionStrategy */ } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 // Redux
 import { Store } from '@ngrx/store';
@@ -19,28 +18,29 @@ import { Hero } from '$models/hero';
 @Component({
   selector: 'fapp-hero-detail-page',
   template: `
-    <fapp-hero-detail
-      [hero]="selectedHero$ | async"
-      [error]="error$ | async"
-      (onGoBack)="goBack()"
-      (onSave)="updateHero($event)"
+    <fapp-heroes
+      [heroes]="heroes$ | async"
+      [selectedHero]="selectedHero$ | async"
+      (onAdd)="addHero($event)"
+      (onDelete)="deleteHero($event)"
+      (onGoToDetail)="goToHeroDetail($event)"
+      (onSelect)="selectHero($event)"
     >
-    </fapp-hero-detail>
+    </fapp-heroes>
   `,
   styles: [`
   `],
 })
-export class HeroDetailPageComponent implements OnInit {
+export class HeroesPageComponent implements OnInit {
   heroes$: Observable<Hero[]>;
   selectedHeroData$: Observable<{ hero: Hero, id: string }>;
   selectedHero$: Observable<Hero>;
   selectedHeroId$: Observable<string>;
-  error$: Observable<string>;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store<AppState>,
-    private location: Location,
   ) {
     // Connect component's heroes to store's heroes
     this.heroes$ = this.store.select(Heroes.Selectors.getHeroes)
@@ -50,6 +50,7 @@ export class HeroDetailPageComponent implements OnInit {
     this.selectedHeroId$ = this.route.paramMap
       .map((params: ParamMap) => params.get('id'))
       .filter(id => !!id);
+    // this.selectedHeroId$ = this.store.select(Heroes.Selectors.getSelectedHeroId);
 
     // Connect selected hero to heroes list & selected id
     this.selectedHeroData$ = Observable
@@ -63,11 +64,6 @@ export class HeroDetailPageComponent implements OnInit {
 
     this.selectedHero$ = this.selectedHeroData$
       .map(({ hero }) => hero);
-
-    this.error$ = this.selectedHeroData$
-      .filter(({ hero }) => hero === undefined)
-      .map(({ id }) => `Unable to find hero #${id}`)
-      .do((msg) => console.error(msg));
   }
 
   /* LifeCycle methods */
@@ -78,12 +74,24 @@ export class HeroDetailPageComponent implements OnInit {
 
   /* Container methods */
 
-  updateHero(hero: Hero): void {
-    this.store.dispatch(new Heroes.UpdateHeroRequest({ hero }));
+  addHero(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+
+    this.store.dispatch(new Heroes.CreateHeroRequest({ name }));
   }
 
-  goBack(): void {
-    this.location.back();
+  deleteHero(id: string): void {
+    this.store.dispatch(new Heroes.DeleteHeroRequest({ id }));
+  }
+
+  goToHeroDetail(id: string): void {
+    this.router.navigate(['/detail', id]);
+  }
+
+  selectHero(id: string): void {
+    console.warn('TODO', 'selectHero', id);
+    // this.selectedHero = hero;
   }
 
   private getHeroes(): void {
