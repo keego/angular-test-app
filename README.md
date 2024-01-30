@@ -4,11 +4,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Setup
 
-The usual: `npm install`
+This app is a bit old so make sure to use node's LTS carbon version.
+
+I use `nvm` to manage my node and npm versions.
+(i.e. `nvm install --lts=carbon` then `nvm use lts/carbon`)
+
+Then, the usual: `npm install`
 
 ## Development server
 
-Run `ng serve` and navigate to `http://localhost:4200/` (or simply run `ng serve --open`). The app will automatically reload if you change any of the source files.
+Run `npm start` and navigate to `http://localhost:4200/` (or simply run `npm start -- --open`). The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
